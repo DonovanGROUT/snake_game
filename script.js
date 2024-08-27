@@ -112,32 +112,30 @@ window.onload = function () {
     }
 
     function drawBlock(position, image = null, angle = 0) {
-        var radiusX = blockSize / 2;
-        var radiusY = blockSize / 3;
-        var x = position[0] * blockSize + radiusX;
-        var y = position[1] * blockSize + radiusY;
-
+        var x = position[0] * blockSize;
+        var y = position[1] * blockSize;
+    
         if (image) {
             ctx.save();
-            ctx.translate(x, y);
+            ctx.translate(x + blockSize / 2, y + blockSize / 2);
             ctx.rotate(angle);
-            ctx.drawImage(image, -radiusX, -radiusX, blockSize, blockSize);
+            ctx.drawImage(image, -blockSize / 2, -blockSize / 2, blockSize, blockSize);
             ctx.restore();
-        } 
-        else {
-        // Dessiner un segment elliptique pour chaque partie du corps du serpent
-        ctx.beginPath();
-        ctx.ellipse(x, y, radiusX, radiusY, 0, 0, Math.PI * 2);
-        ctx.closePath();
-        ctx.fill();
-
-        // Dessiner l'image de texture d'écailles à l'intérieur de l'ellipse
-        ctx.save();
-        ctx.clip();
-        ctx.drawImage(snakee.imageBody, position[0] * blockSize, position[1] * blockSize, blockSize, blockSize);
-        ctx.restore();
+        } else {
+            // Dessiner un segment elliptique pour chaque partie du corps du serpent
+            ctx.beginPath();
+            ctx.ellipse(x + blockSize / 2, y + blockSize / 2, blockSize / 2, blockSize / 3, 0, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.fill();
+    
+            // Dessiner l'image de texture d'écailles à l'intérieur de l'ellipse
+            ctx.save();
+            ctx.clip();
+            ctx.drawImage(snakee.imageBody, x, y, blockSize, blockSize);
+            ctx.restore();
         }
     }
+    
 
     function Snake(body, direction) {
         this.body = body;
